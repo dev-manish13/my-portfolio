@@ -1,0 +1,24 @@
+[
+  {
+    "id": "er-triage-dispatch",
+    "title": "Algorithmic ER Triage & Resource Dispatch System",
+    "description": "A full-stack system that algorithmically triages incoming ER patients by severity and automatically dispatches available hospital resources, cutting manual coordination overhead in simulated high-load scenarios.",
+    "tags": ["React", "Node.js", "Express", "MySQL", "Tailwind CSS"],
+    "github": "https://github.com/dev-manish13/er-triage-dispatch",
+    "live": null,
+    "featured": true,
+    "codeFilename": "triage.js",
+    "code": "function triageScore(patient) {\n  const { vitals, symptoms } = patient;\n  let score = 0;\n\n  if (vitals.spo2 < 90) score += 40;\n  if (vitals.heartRate > 130) score += 25;\n  if (symptoms.includes(\"chest_pain\")) score += 30;\n\n  return score >= 60 ? \"CRITICAL\" : \"STABLE\";\n}\n\napp.post(\"/dispatch\", async (req, res) => {\n  const level = triageScore(req.body);\n  await queue.push({ level, patient: req.body });\n  res.json({ level });\n});"
+  },
+  {
+    "id": "python-price-scraper",
+    "title": "Automated Web Scraper & Telegram Alert Bot",
+    "description": "A scheduled Python scraper that tracks product prices across target sites and pushes real-time Telegram alerts the moment a price drop or restock is detected, removing the need to manually check listings.",
+    "tags": ["Python", "BeautifulSoup4", "Requests", "Automation"],
+    "github": "https://github.com/dev-manish13/python-price-scraper",
+    "live": null,
+    "featured": true,
+    "codeFilename": "scraper.py",
+    "code": "def check_price(url):\n    res = requests.get(url, headers=HEADERS)\n    soup = BeautifulSoup(res.text, \"html.parser\")\n    price = soup.select_one(\".price\").get_text(strip=True)\n\n    if float(price[1:]) < TARGET_PRICE:\n        send_telegram_alert(\n            \"Price drop! Now \" + price\n        )\n\n    return price"
+  }
+]

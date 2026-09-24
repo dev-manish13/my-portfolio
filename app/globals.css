@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: toggled via a `dark` class on <html> instead of prefers-color-scheme */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --surface: #ffffff;
+  --surface-border: #e2e8f0;
+  --surface-muted: #f1f5f9;
+
+  --accent-cyan: #38bdf8;
+  --accent-emerald: #34d399;
+
+  --text-muted: #475569;
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #f1f5f9;
+
+  --surface: rgb(15 23 42 / 0.5);
+  --surface-border: #1e293b;
+  --surface-muted: rgb(30 41 59 / 0.5);
+
+  --accent-cyan: #38bdf8;
+  --accent-emerald: #34d399;
+
+  --text-muted: #94a3b8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-border: var(--surface-border);
+  --color-surface-muted: var(--surface-muted);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-emerald: var(--accent-emerald);
+  --color-text-muted: var(--text-muted);
+
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-fira-code);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--surface-border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+::selection {
+  background: rgb(56 189 248 / 0.3);
+  color: #0c4a6e;
+}
+
+.dark ::selection {
+  background: rgb(16 185 129 / 0.3);
+  color: #a7f3d0;
+}
+
+/* Slim, theme-aware scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--surface-border);
+  border-radius: 999px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-cyan);
+}
+
+@layer utilities {
+  .card-surface {
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 0 1px rgb(56 189 248 / 0.15), 0 0 40px -12px rgb(56 189 248 / 0.35);
+  }
+
+  .glow-emerald {
+    box-shadow: 0 0 0 1px rgb(52 211 153 / 0.15), 0 0 40px -12px rgb(52 211 153 / 0.35);
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(148 163 184 / 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(148 163 184 / 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: grid-drift 40s linear infinite;
+  }
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 80px 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-grid {
+    animation: none;
+  }
+}
+
+@keyframes blink-caret {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.caret-blink {
+  animation: blink-caret 1s step-end infinite;
 }

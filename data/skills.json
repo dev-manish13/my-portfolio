@@ -1,0 +1,38 @@
+[
+  {
+    "category": "Frontend",
+    "items": [
+      { "name": "React", "icon": "Atom" },
+      { "name": "JavaScript", "icon": "FileCode" },
+      { "name": "Tailwind CSS", "icon": "Palette" },
+      { "name": "HTML5 & CSS3", "icon": "LayoutTemplate" }
+    ]
+  },
+  {
+    "category": "Backend",
+    "items": [
+      { "name": "Node.js", "icon": "Server" },
+      { "name": "Express", "icon": "Route" },
+      { "name": "MySQL", "icon": "Database" },
+      { "name": "REST APIs", "icon": "Plug" }
+    ]
+  },
+  {
+    "category": "Python & Automation",
+    "items": [
+      { "name": "Python", "icon": "Terminal" },
+      { "name": "BeautifulSoup4", "icon": "Soup" },
+      { "name": "Requests", "icon": "ArrowLeftRight" },
+      { "name": "Automation", "icon": "Bot" }
+    ]
+  },
+  {
+    "category": "Tools",
+    "items": [
+      { "name": "Git", "icon": "GitBranch" },
+      { "name": "GitHub", "icon": "GithubMark" },
+      { "name": "VS Code", "icon": "SquareCode" },
+      { "name": "Linux", "icon": "TerminalSquare" }
+    ]
+  }
+]
