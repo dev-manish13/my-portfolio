@@ -46,7 +46,7 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium transition-colors duration-150 hover:bg-surface-muted"
             >
-              Resume
+              Resume ↗
             </a>
           </div>
         </div>

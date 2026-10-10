@@ -14,6 +14,5 @@ export default function sitemap() {
       priority: 0.7,
     })),
     { url: `${BASE}/contact`, lastModified: now, priority: 0.6 },
-    { url: `${BASE}/resume`, lastModified: now, priority: 0.5 },
   ];
 }

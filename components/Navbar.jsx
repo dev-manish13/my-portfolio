@@ -55,13 +55,6 @@ export default function Navbar() {
             <Command size={12} />K
           </button>
           <ThemeToggle />
-          <Link
-            href="/resume"
-            aria-current={pathname === "/resume" ? "page" : undefined}
-            className={`hidden h-8 items-center rounded-md px-3 text-sm md:inline-flex ${buttonBorder}`}
-          >
-            Resume ↗
-          </Link>
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
@@ -76,7 +69,7 @@ export default function Navbar() {
 
       {menuOpen && (
         <div className="flex flex-col gap-1 border-t border-zinc-200 px-6 py-3 dark:border-zinc-800 md:hidden">
-          {[...NAV_LINKS, { label: "Resume ↗", href: "/resume" }].map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
