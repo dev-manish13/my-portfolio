@@ -1,23 +1,27 @@
+import Link from "next/link";
 import { profile } from "@/data/profile";
+
+const linkClass = "transition-colors duration-150 hover:text-zinc-900 dark:hover:text-zinc-100";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-surface-border px-6 py-5">
-      <div className="lowercase mx-auto flex w-full max-w-6xl flex-col items-center justify-center gap-3 font-mono text-xs text-text-muted sm:flex-row sm:gap-6">
-        <span className="flex flex-nowrap items-center gap-2 whitespace-nowrap">
-          <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-          All systems operational. Latency: 12ms
-          <span className="text-surface-border" aria-hidden="true">
-            |
-          </span>
-          © {new Date().getFullYear()} {profile.name}
-        </span>
-
-        <p className="flex items-center gap-1.5 whitespace-nowrap">
-          Press <kbd className="rounded border border-surface-border px-1.5 py-0.5">⌘</kbd>{" "}
-          <kbd className="rounded border border-surface-border px-1.5 py-0.5">K</kbd> to open the
-          command palette
-        </p>
+    <footer className="border-t border-zinc-200 bg-zinc-50 px-6 py-8 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <p>© 2026 {profile.name}. All rights reserved.</p>
+        <nav aria-label="Footer" className="flex items-center gap-6">
+          <a href={profile.github} target="_blank" rel="noopener noreferrer" className={linkClass}>
+            GitHub
+          </a>
+          <Link href="/blog" className={linkClass}>
+            Blog
+          </Link>
+          <Link href="/projects" className={linkClass}>
+            Projects
+          </Link>
+          <Link href="/contact" className={linkClass}>
+            Contact
+          </Link>
+        </nav>
       </div>
     </footer>
   );

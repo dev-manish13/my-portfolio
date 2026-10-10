@@ -19,14 +19,13 @@ export default function Avatar({ size = 160, className = "" }) {
 
   return (
     <div
-      className={`relative shrink-0 overflow-hidden rounded-2xl border border-surface-border bg-gradient-to-br from-accent-cyan/20 to-accent-emerald/20 ${className}`}
+      className={`relative shrink-0 overflow-hidden rounded-full border border-surface-border bg-surface-muted ${className}`}
       style={{ width: size, height: size }}
     >
       {!failed ? (
         // Plain <img>, not next/image: /public/profile.jpg is expected to be
         // absent until the real photo is added, and a 404 should fall back
         // to the initials badge instead of Next's image error overlay.
-        // TODO: Add profile.jpg to public folder
         // eslint-disable-next-line @next/next/no-img-element -- needs a real onError fallback
         <img
           ref={imgRef}
@@ -38,10 +37,10 @@ export default function Avatar({ size = 160, className = "" }) {
       ) : (
         <div className="flex h-full w-full items-center justify-center">
           <span
-            className="text-gradient font-mono font-bold"
+            className="font-mono font-bold"
             style={{ fontSize: size * 0.32 }}
           >
-            {profile.initials}
+            {profile.name.split(" ").map((w) => w[0]).join("")}
           </span>
         </div>
       )}

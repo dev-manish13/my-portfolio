@@ -1,33 +1,32 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, FolderGit2, Atom, Copy, Check, FileText, User, Mail, Command } from "lucide-react";
 import { useCommandPalette } from "@/lib/command-palette-context";
-import { useResumeModal } from "@/lib/resume-modal-context";
 import { profile } from "@/data/profile";
 
 export default function CommandPalette() {
   const { isOpen, close, toggle } = useCommandPalette();
-  const { open: openResume } = useResumeModal();
   const [query, setQuery] = useState("");
   const [copied, setCopied] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef(null);
 
-  const scrollTo = (id) => () => {
+  const router = useRouter();
+
+  const goTo = (href) => () => {
     close();
-    requestAnimationFrame(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    router.push(href);
   };
 
   const commands = useMemo(
     () => [
-      { id: "about", label: "Go to About", icon: User, action: scrollTo("about") },
-      { id: "skills", label: "Go to Skills", icon: Atom, action: scrollTo("skills") },
-      { id: "projects", label: "Go to Projects", icon: FolderGit2, action: scrollTo("projects") },
-      { id: "contact", label: "Go to Contact", icon: Mail, action: scrollTo("contact") },
+      { id: "about", label: "Go to About", icon: User, action: goTo("/#about") },
+      { id: "skills", label: "Go to Skills", icon: Atom, action: goTo("/#skills") },
+      { id: "projects", label: "Go to Projects", icon: FolderGit2, action: goTo("/projects") },
+      { id: "contact", label: "Go to Contact", icon: Mail, action: goTo("/contact") },
       {
         id: "copy-email",
         label: copied ? "Email copied!" : `Copy Email (${profile.email})`,
@@ -45,11 +44,11 @@ export default function CommandPalette() {
       },
       {
         id: "resume",
-        label: "Download Resume",
+        label: "Open Resume",
         icon: FileText,
         action: () => {
           close();
-          openResume();
+          window.open(profile.resume, "_blank", "noopener,noreferrer");
         },
       },
     ],
@@ -124,7 +123,7 @@ export default function CommandPalette() {
           transition={{ duration: 0.15 }}
         >
           <motion.div
-            className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-zinc-950/70 backdrop-blur-sm"
             onClick={close}
             aria-hidden="true"
           />
@@ -133,7 +132,7 @@ export default function CommandPalette() {
             role="dialog"
             aria-modal="true"
             aria-label="Command palette"
-            className="card-surface relative z-10 w-full max-w-lg overflow-hidden rounded-2xl shadow-2xl"
+            className="card-surface relative z-10 w-full max-w-lg overflow-hidden rounded-lg shadow-2xl"
             initial={{ opacity: 0, scale: 0.96, y: -8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -8 }}
@@ -166,7 +165,7 @@ export default function CommandPalette() {
                     cmd.action();
                     if (!cmd.keepOpen) close();
                   }}
-                  className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${
+                  className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors duration-150 ${
                     i === activeIndex
                       ? "bg-accent-cyan/10 text-accent-cyan"
                       : "text-foreground hover:bg-surface-muted"

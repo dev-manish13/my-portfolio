@@ -1,41 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Command, FileText } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X, Command } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useResumeModal } from "@/lib/resume-modal-context";
 import { useCommandPalette } from "@/lib/command-palette-context";
 
 const NAV_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Projects", href: "/projects" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
 ];
+
+const linkClass =
+  "text-sm text-zinc-600 transition-colors duration-150 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100";
+const activeClass = "!text-zinc-900 dark:!text-zinc-100";
+const buttonBorder =
+  "border border-zinc-200 text-zinc-600 transition-colors duration-150 hover:border-zinc-400 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:text-zinc-100";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { open } = useResumeModal();
+  const pathname = usePathname();
   const { open: openPalette } = useCommandPalette();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-surface-border bg-background/80 backdrop-blur-md">
-      <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-3.5">
-        <a href="#home" className="lowercase font-mono text-lg font-bold">
-          <span className="text-accent-cyan">&lt;</span>mk
-          <span className="text-accent-cyan">/&gt;</span>
-        </a>
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 text-zinc-900 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-100">
+      <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6">
+        <Link href="/" className="font-mono text-sm font-bold lowercase">
+          manish.dev
+        </Link>
 
         <div className="hidden items-center gap-7 md:flex">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
-              className="lowercase text-sm font-medium text-text-muted transition-colors hover:text-accent-cyan"
+              aria-current={link.href === pathname ? "page" : undefined}
+              className={`${linkClass} ${link.href === pathname ? activeClass : ""}`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -43,69 +49,45 @@ export default function Navbar() {
           <button
             type="button"
             onClick={openPalette}
-            className="lowercase hidden items-center gap-2 rounded-lg border border-surface-border px-3 py-1.5 text-xs text-text-muted transition-colors hover:border-accent-cyan/50 hover:text-accent-cyan sm:flex"
+            aria-label="Open command palette"
+            className={`hidden h-8 items-center gap-1 rounded-md px-2 text-xs sm:inline-flex ${buttonBorder}`}
           >
-            <Command size={13} />
-            <span>Search</span>
-            <kbd className="rounded border border-surface-border px-1 text-[10px]">⌘K</kbd>
+            <Command size={12} />K
           </button>
-
-          <button
-            type="button"
-            onClick={open}
-            className="lowercase hidden items-center gap-1.5 rounded-lg border border-surface-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-accent-cyan/50 hover:text-accent-cyan sm:flex"
-          >
-            <FileText size={13} />
-            Resume
-          </button>
-
           <ThemeToggle />
-
+          <Link
+            href="/resume"
+            aria-current={pathname === "/resume" ? "page" : undefined}
+            className={`hidden h-8 items-center rounded-md px-3 text-sm md:inline-flex ${buttonBorder}`}
+          >
+            Resume ↗
+          </Link>
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
             aria-label="Toggle menu"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-surface-border text-foreground md:hidden"
+            aria-expanded={menuOpen}
+            className={`inline-flex h-8 w-8 items-center justify-center rounded-md md:hidden ${buttonBorder}`}
           >
-            {menuOpen ? <X size={17} /> : <Menu size={17} />}
+            {menuOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </nav>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-surface-border md:hidden"
-          >
-            <div className="flex flex-col gap-1 px-6 py-4">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="lowercase rounded-lg px-2 py-2.5 text-sm font-medium text-text-muted transition-colors hover:bg-surface-muted hover:text-accent-cyan"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false);
-                  open();
-                }}
-                className="lowercase mt-1 rounded-lg px-2 py-2.5 text-left text-sm font-medium text-text-muted transition-colors hover:bg-surface-muted hover:text-accent-cyan"
-              >
-                Resume
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {menuOpen && (
+        <div className="flex flex-col gap-1 border-t border-zinc-200 px-6 py-3 dark:border-zinc-800 md:hidden">
+          {[...NAV_LINKS, { label: "Resume ↗", href: "/resume" }].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className={`${linkClass} py-2`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      )}
     </header>
   );
 }

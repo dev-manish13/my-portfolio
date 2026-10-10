@@ -16,9 +16,7 @@ export default async function Image() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          backgroundColor: "#020617",
-          backgroundImage:
-            "linear-gradient(to bottom right, rgba(56,189,248,0.12), transparent 60%)",
+          backgroundColor: "#09090b",
         }}
       >
         <div
@@ -27,13 +25,11 @@ export default async function Image() {
             alignItems: "center",
             gap: 12,
             fontSize: 28,
-            fontFamily: "monospace",
-            color: "#38bdf8",
+            fontFamily: "sans-serif",
+            color: "#a1a1aa",
           }}
         >
-          <span>{"<"}</span>
-          <span style={{ color: "#f1f5f9" }}>MK</span>
-          <span>{"/>"}</span>
+          <span style={{ color: "#fafafa" }}>manish.dev</span>
         </div>
 
         <div
@@ -42,7 +38,7 @@ export default async function Image() {
             marginTop: 36,
             fontSize: 72,
             fontWeight: 700,
-            color: "#f1f5f9",
+            color: "#fafafa",
           }}
         >
           {profile.name}
@@ -53,7 +49,7 @@ export default async function Image() {
             display: "flex",
             marginTop: 20,
             fontSize: 34,
-            color: "#34d399",
+            color: "#a1a1aa",
             fontWeight: 600,
           }}
         >
@@ -65,7 +61,7 @@ export default async function Image() {
             display: "flex",
             marginTop: 32,
             fontSize: 24,
-            color: "#94a3b8",
+            color: "#71717a",
             maxWidth: 820,
           }}
         >

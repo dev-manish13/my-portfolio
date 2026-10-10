@@ -8,15 +8,14 @@ const ThemeContext = createContext({
 });
 
 /**
- * Inline, pre-hydration script that reads the persisted theme (or system
- * preference) and applies the `dark` class before React mounts, so there is
+ * Inline, pre-hydration script that reads the persisted theme (defaulting to dark) and applies the `dark` class before React mounts, so there is
  * no light/dark flash on first paint.
  */
 export const themeInitScript = `
 (function () {
   try {
     var stored = localStorage.getItem("theme");
-    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    var theme = stored === "light" || stored === "dark" ? stored : "dark";
     if (theme === "dark") document.documentElement.classList.add("dark");
     else document.documentElement.classList.remove("dark");
   } catch (e) {}

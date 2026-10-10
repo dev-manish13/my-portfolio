@@ -1,61 +1,65 @@
-import { Space_Grotesk, Fira_Code } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, themeInitScript } from "@/lib/theme-provider";
-import { ResumeModalProvider } from "@/lib/resume-modal-context";
 import { CommandPaletteProvider } from "@/lib/command-palette-context";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
-import ResumeModal from "@/components/ResumeModal";
 import ScrollProgress from "@/components/ScrollProgress";
 import ScrollRestoration from "@/components/ScrollRestoration";
-import { profile } from "@/data/profile";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
-const firaCode = Fira_Code({
-  variable: "--font-fira-code",
+const mono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
 });
 
-const title = `${profile.name} — ${profile.role}`;
+const SITE_URL = "https://kandelmanish.com.np";
+const SITE_TITLE = "Manish Kandel — Full-Stack Developer & Python Automation Specialist";
 
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: title,
-    template: `%s — ${profile.name}`,
+    default: SITE_TITLE,
+    template: "%s | Manish Kandel",
   },
-  description: profile.bio,
+  description:
+    "Full-stack developer building React web applications, Node.js REST APIs, and automated Python data pipelines in Kathmandu, Nepal.",
   keywords: [
     "Manish Kandel",
-    "Full-Stack Developer",
-    "React Developer",
-    "Node.js Developer",
+    "Full Stack Developer",
     "Python Automation",
+    "React Developer Nepal",
+    "Node.js",
     "Web Scraping",
-    "Kathmandu Nepal Developer",
-    "Portfolio",
+    "Kathmandu Developer",
   ],
-  authors: [{ name: profile.name, url: profile.github }],
-  creator: profile.name,
-  metadataBase: new URL("https://example.com"), // TODO: replace with your production domain
+  authors: [{ name: "Manish Kandel", url: SITE_URL }],
+  creator: "Manish Kandel",
   openGraph: {
-    title,
-    description: profile.bio,
-    url: "/",
-    siteName: `${profile.name} — Portfolio`,
-    locale: "en_US",
     type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    title: SITE_TITLE,
+    description:
+      "Full-stack developer building React web applications, Node.js REST APIs, and automated Python data pipelines.",
+    siteName: "Manish Kandel Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title,
-    description: profile.bio,
+    title: SITE_TITLE,
+    description:
+      "Full-stack developer building React web applications, Node.js REST APIs, and automated Python data pipelines.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -63,7 +67,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${firaCode.variable} h-full antialiased`}
+      className={`${inter.variable} ${mono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
@@ -72,7 +76,6 @@ export default function RootLayout({ children }) {
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans" suppressHydrationWarning>
         <ThemeProvider>
-          <ResumeModalProvider>
             <CommandPaletteProvider>
               <ScrollRestoration />
               <ScrollProgress />
@@ -80,9 +83,7 @@ export default function RootLayout({ children }) {
               <main className="flex-1">{children}</main>
               <Footer />
               <CommandPalette />
-              <ResumeModal />
             </CommandPaletteProvider>
-          </ResumeModalProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,59 +1,42 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Code2, Server, Bot } from "lucide-react";
-import { profile } from "@/data/profile";
-
-const focusAreas = [
-  {
-    icon: Code2,
-    title: "React Frontends",
-    description: "Building fast, accessible interfaces with React and Tailwind CSS.",
-  },
-  {
-    icon: Server,
-    title: "Node.js APIs",
-    description: "Designing REST APIs with Node.js, Express, and MySQL.",
-  },
-  {
-    icon: Bot,
-    title: "Python Automation",
-    description: "Scripting scrapers and bots that remove repetitive manual work.",
-  },
-];
+import { timeline } from "@/data/profile";
 
 export default function About() {
   return (
-    <section id="about" className="border-b border-surface-border px-6 py-20">
-      <div className="mx-auto w-full max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-        >
-          <p className="lowercase font-mono text-sm text-accent-cyan">01. About</p>
-          <h2 className="mt-2 max-w-2xl text-3xl font-bold tracking-tight">
-            {profile.bio}
-          </h2>
-        </motion.div>
+    <section id="about" className="scroll-mt-14 px-6 py-12 md:py-16">
+      <div className="mx-auto w-full max-w-5xl">
+        <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Experience & Education</h2>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-3">
-          {focusAreas.map((area, i) => (
-            <motion.div
-              key={area.title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="card-surface rounded-2xl p-6"
-            >
-              <div className="mb-4 inline-flex rounded-xl bg-accent-cyan/10 p-2.5 text-accent-cyan">
-                <area.icon size={20} />
-              </div>
-              <h3 className="font-semibold text-foreground">{area.title}</h3>
-              <p className="mt-1.5 text-sm text-text-muted">{area.description}</p>
-            </motion.div>
+        <div className="mt-10 flex flex-col gap-12">
+          {timeline.map((group) => (
+            <div key={group.heading}>
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                {group.heading}
+              </h3>
+              <ol className="mt-5 border-l border-border">
+                {group.items.map((item) => (
+                  <li key={item.title} className="relative pb-8 pl-6 last:pb-0">
+                    <span className="absolute -left-[5px] top-[7px] h-[9px] w-[9px] rounded-full border border-border bg-background" />
+                    <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                      <p className="font-medium">
+                        {item.title}
+                        {item.place && (
+                          <span className="font-normal text-text-muted"> · {item.place}</span>
+                        )}
+                      </p>
+                      <p className="shrink-0 font-mono text-xs tabular-nums text-text-muted">{item.period}</p>
+                    </div>
+                    <p className="text-sm text-text-muted">{item.role}</p>
+                    {item.points && (
+                      <ul className="mt-2 list-disc space-y-1 pl-4 text-sm leading-relaxed text-text-muted marker:text-border">
+                        {item.points.map((pt) => (
+                          <li key={pt}>{pt}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
           ))}
         </div>
       </div>

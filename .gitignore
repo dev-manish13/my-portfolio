@@ -30,8 +30,19 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# Secrets & Environment
+.env
+.env.local
+.env*.local
 .env*
+!.env.example
+
+# Agent files & local scratchpads
+.claude/
+CLAUDE.md
+AGENTS.md
+PORTFOLIO_TODO.md
+implementation_plan.md
 
 # vercel
 .vercel
