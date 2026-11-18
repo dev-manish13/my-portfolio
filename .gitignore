@@ -37,10 +37,7 @@ yarn-error.log*
 .env*
 !.env.example
 
-# Agent files & local scratchpads
-.claude/
-CLAUDE.md
-AGENTS.md
+# Local notes
 PORTFOLIO_TODO.md
 implementation_plan.md
 
