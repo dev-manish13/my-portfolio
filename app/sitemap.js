@@ -1,6 +1,5 @@
 import { posts } from "@/data/posts";
-
-const BASE = "https://kandelmanish.com.np";
+import { SITE_URL as BASE } from "@/data/profile";
 
 export default function sitemap() {
   const now = new Date();

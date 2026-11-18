@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { profile } from "@/data/profile";
 
 export default function Avatar({ size = 160, className = "" }) {
@@ -19,25 +20,24 @@ export default function Avatar({ size = 160, className = "" }) {
 
   return (
     <div
-      className={`relative shrink-0 overflow-hidden rounded-full border border-surface-border bg-surface-muted ${className}`}
+      className={`relative shrink-0 overflow-hidden rounded-full border border-border bg-surface-100 ${className}`}
       style={{ width: size, height: size }}
     >
       {!failed ? (
-        // Plain <img>, not next/image: /public/profile.jpg is expected to be
-        // absent until the real photo is added, and a 404 should fall back
-        // to the initials badge instead of Next's image error overlay.
-        // eslint-disable-next-line @next/next/no-img-element -- needs a real onError fallback
-        <img
+        <Image
           ref={imgRef}
           src={profile.avatar}
-          alt={profile.name}
+          alt={profile.avatarAlt}
+          width={size}
+          height={size}
+          loading="eager"
           onError={() => setFailed(true)}
           className="h-full w-full object-cover"
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center">
           <span
-            className="font-mono font-bold"
+            className="font-semibold"
             style={{ fontSize: size * 0.32 }}
           >
             {profile.name.split(" ").map((w) => w[0]).join("")}

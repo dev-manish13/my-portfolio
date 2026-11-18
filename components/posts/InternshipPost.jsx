@@ -1,11 +1,11 @@
 import { H2, P, Code } from "@/components/posts/prose";
 
 const Ul = ({ children }) => (
-  <ul className="mb-6 list-disc space-y-2 pl-5 leading-7 text-text-muted marker:text-border">
+  <ul className="mb-6 list-disc space-y-2 pl-5 text-body text-ink-muted marker:text-border-strong">
     {children}
   </ul>
 );
-const B = ({ children }) => <strong className="text-foreground">{children}</strong>;
+const B = ({ children }) => <strong className="text-ink">{children}</strong>;
 
 export default function InternshipPost() {
   return (

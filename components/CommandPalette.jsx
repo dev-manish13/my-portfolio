@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Search, FolderGit2, Atom, Copy, Check, FileText, User, Mail, Command } from "lucide-react";
+import { Search, FolderGit2, Atom, Copy, Check, FileText, User, Mail } from "lucide-react";
 import { useCommandPalette } from "@/lib/command-palette-context";
 import { profile } from "@/data/profile";
 
@@ -123,7 +123,7 @@ export default function CommandPalette() {
           transition={{ duration: 0.15 }}
         >
           <motion.div
-            className="absolute inset-0 bg-zinc-950/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={close}
             aria-hidden="true"
           />
@@ -132,29 +132,29 @@ export default function CommandPalette() {
             role="dialog"
             aria-modal="true"
             aria-label="Command palette"
-            className="card-surface relative z-10 w-full max-w-lg overflow-hidden rounded-lg shadow-2xl"
+            className="relative z-10 w-full max-w-lg overflow-hidden rounded-xl border border-border bg-surface-50"
             initial={{ opacity: 0, scale: 0.96, y: -8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -8 }}
             transition={{ duration: 0.15 }}
           >
-            <div className="flex items-center gap-3 border-b border-surface-border px-4 py-3">
-              <Search size={17} className="text-text-muted" />
+            <div className="flex items-center gap-3 border-b border-border px-4 py-3">
+              <Search size={20} className="text-ink-muted" />
               <input
                 ref={inputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Type a command…"
-                className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-text-muted"
+                className="w-full bg-transparent text-body text-ink outline-none placeholder:text-ink-muted"
               />
-              <kbd className="hidden items-center gap-1 rounded border border-surface-border px-1.5 py-0.5 text-[10px] text-text-muted sm:flex">
-                <Command size={10} />K
+              <kbd className="hidden items-center rounded-sm border border-border px-1.5 py-0.5 text-caption text-ink-muted sm:flex">
+                Esc
               </kbd>
             </div>
 
             <div className="max-h-72 overflow-y-auto p-2">
               {filtered.length === 0 && (
-                <p className="px-3 py-6 text-center text-sm text-text-muted">No matching commands.</p>
+                <p className="px-3 py-6 text-center text-label font-normal text-ink-muted">No matching commands.</p>
               )}
               {filtered.map((cmd, i) => (
                 <button
@@ -165,13 +165,13 @@ export default function CommandPalette() {
                     cmd.action();
                     if (!cmd.keepOpen) close();
                   }}
-                  className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors duration-150 ${
+                  className={`flex w-full items-center gap-3 rounded-item px-3 py-2 text-left text-nav transition-colors duration-150 ${
                     i === activeIndex
-                      ? "bg-accent-cyan/10 text-accent-cyan"
-                      : "text-foreground hover:bg-surface-muted"
+                      ? "bg-surface-200 text-ink"
+                      : "text-ink hover:bg-surface-100"
                   }`}
                 >
-                  <cmd.icon size={16} />
+                  <cmd.icon size={20} className="shrink-0" />
                   {cmd.label}
                 </button>
               ))}

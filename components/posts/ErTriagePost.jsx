@@ -16,17 +16,17 @@ export default function ErTriagePost() {
 
       <H2>1. The Core Scoring Engine</H2>
       <P>Our triage score evaluates incoming patient vitals against standardized clinical thresholds:</P>
-      <ul className="mb-6 list-disc space-y-2 pl-5 leading-7 text-text-muted marker:text-border">
+      <ul className="mb-6 list-disc space-y-2 pl-5 text-body text-ink-muted marker:text-border-strong">
         <li>
-          <strong className="text-foreground">SpO2:</strong> Saturation below 90% immediately
+          <strong className="text-ink">SpO2:</strong> Saturation below 90% immediately
           escalates the patient to CRITICAL.
         </li>
         <li>
-          <strong className="text-foreground">Heart Rate:</strong> Extremes (&lt;45 bpm or &gt;130
+          <strong className="text-ink">Heart Rate:</strong> Extremes (&lt;45 bpm or &gt;130
           bpm) add significant priority weight.
         </li>
         <li>
-          <strong className="text-foreground">Systolic Blood Pressure:</strong> Hypotensive crisis
+          <strong className="text-ink">Systolic Blood Pressure:</strong> Hypotensive crisis
           (&lt;85 mmHg) or hypertensive crisis (&gt;190 mmHg) triggers immediate alerts.
         </li>
       </ul>

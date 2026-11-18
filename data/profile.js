@@ -1,8 +1,18 @@
+export const SITE_URL = "https://kandelmanish.com.np";
+
+// Single source of truth for the navbar brand and job title: the navbar,
+// page titles, Open Graph tags, OG image and JSON-LD all read from here.
+export const BRAND = "manish.dev";
+
 export const profile = {
   name: "Manish Kandel",
   role: "Full-Stack Developer & Python Automation Specialist",
   location: "Kathmandu, Nepal",
-  phone: "+977 9741661534",
+  locality: "Kathmandu",
+  country: "Nepal",
+  // Base64-encoded so the number never appears as plain text in the HTML or
+  // the JS bundle; the contact page decodes it when the visitor asks for it.
+  phoneEncoded: "Kzk3NyA5NzQxNjYxNTM0",
   email: "manishkandel.co@gmail.com",
   github: "https://github.com/dev-manish13",
   githubUsername: "dev-manish13",
@@ -10,6 +20,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com",
   bio: "Full-Stack Developer & Python Automation Specialist building React web applications, Node.js REST APIs, and automated data pipelines.",
   avatar: "/profile.jpg",
+  avatarAlt: "Portrait of Manish Kandel, full-stack developer in Kathmandu",
   resume: "/resume.pdf",
 };
 
@@ -17,7 +28,7 @@ export const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${
 
 export const timeline = [
   {
-    heading: "Work & Experience",
+    heading: "Work experience",
     items: [
       {
         title: "Birgunj Bazar Pvt. Ltd.",
@@ -27,15 +38,10 @@ export const timeline = [
           "Developed responsive frontend web components, catalog interfaces, and storefront features.",
         ],
       },
-      {
-        title: "freeCodeCamp",
-        role: "Front End Development Certification",
-        period: "Certification",
-      },
     ],
   },
   {
-    heading: "Education",
+    heading: "Education & certifications",
     items: [
       {
         title: "Triton International College, Tribhuvan University",
@@ -49,13 +55,16 @@ export const timeline = [
         role: "+2 Management",
         period: "2018 – 2020",
       },
+      {
+        title: "freeCodeCamp",
+        role: "Front End Development Certification",
+      },
     ],
   },
 ];
 
 export const skillGroups = [
-  { category: "Frontend", items: ["React", "JavaScript", "Tailwind CSS"] },
-  { category: "Backend", items: ["Node.js", "Express", "MySQL"] },
+  { category: "Frontend", items: ["React", "Next.js", "JavaScript", "Tailwind CSS"] },
+  { category: "Backend & Tools", items: ["Node.js", "Express", "MySQL", "Git"] },
   { category: "Python & Automation", items: ["Python", "BeautifulSoup4"] },
-  { category: "Tools", items: ["Git"] },
 ];

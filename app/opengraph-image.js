@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { profile } from "@/data/profile";
+import { profile, BRAND } from "@/data/profile";
 
 export const alt = `${profile.name} — ${profile.role}`;
 export const size = { width: 1200, height: 630 };
@@ -16,7 +16,7 @@ export default async function Image() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          backgroundColor: "#09090b",
+          backgroundColor: "#111111", // Ember dark surface-0
         }}
       >
         <div
@@ -26,19 +26,22 @@ export default async function Image() {
             gap: 12,
             fontSize: 28,
             fontFamily: "sans-serif",
-            color: "#a1a1aa",
+            color: "#B4B4B4",
           }}
         >
-          <span style={{ color: "#fafafa" }}>manish.dev</span>
+          <span style={{ width: 16, height: 16, backgroundColor: "#FA4616" }} />
+          <span style={{ color: "#EEEEEE" }}>{BRAND}</span>
         </div>
 
         <div
           style={{
             display: "flex",
             marginTop: 36,
-            fontSize: 72,
+            fontSize: 96,
             fontWeight: 700,
-            color: "#fafafa",
+            lineHeight: 0.95,
+            letterSpacing: "-0.03em",
+            color: "#EEEEEE",
           }}
         >
           {profile.name}
@@ -49,7 +52,7 @@ export default async function Image() {
             display: "flex",
             marginTop: 20,
             fontSize: 34,
-            color: "#a1a1aa",
+            color: "#FF9275",
             fontWeight: 600,
           }}
         >
@@ -61,7 +64,7 @@ export default async function Image() {
             display: "flex",
             marginTop: 32,
             fontSize: 24,
-            color: "#71717a",
+            color: "#B4B4B4",
             maxWidth: 820,
           }}
         >

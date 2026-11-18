@@ -14,7 +14,7 @@ export default function TelegramBotPost() {
         For local development, long polling (<Code>getUpdates</Code>) is convenient. In production,
         webhooks running on a lightweight FastAPI server are far superior:
       </P>
-      <ul className="mb-6 list-disc space-y-2 pl-5 leading-7 text-text-muted marker:text-border">
+      <ul className="mb-6 list-disc space-y-2 pl-5 text-body text-ink-muted marker:text-border-strong">
         <li>Zero idle CPU usage.</li>
         <li>Immediate event response time (&lt;100ms).</li>
         <li>Built-in HTTPS validation via Cloudflare or reverse proxies.</li>

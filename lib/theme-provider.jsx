@@ -8,14 +8,17 @@ const ThemeContext = createContext({
 });
 
 /**
- * Inline, pre-hydration script that reads the persisted theme (defaulting to dark) and applies the `dark` class before React mounts, so there is
- * no light/dark flash on first paint.
+ * Inline, pre-hydration script that reads the persisted theme, falling back to
+ * the visitor's system preference, and applies the `dark` class before React
+ * mounts, so there is no light/dark flash on first paint.
  */
 export const themeInitScript = `
 (function () {
   try {
     var stored = localStorage.getItem("theme");
-    var theme = stored === "light" || stored === "dark" ? stored : "dark";
+    var theme = stored === "light" || stored === "dark"
+      ? stored
+      : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     if (theme === "dark") document.documentElement.classList.add("dark");
     else document.documentElement.classList.remove("dark");
   } catch (e) {}
@@ -32,6 +35,22 @@ export function ThemeProvider({ children }) {
     const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(current);
+
+    // Until the visitor picks a theme with the toggle, keep following the OS.
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const followSystem = (e) => {
+      let stored = null;
+      try {
+        stored = localStorage.getItem("theme");
+      } catch {
+        // storage unavailable: nothing was persisted, so keep following the OS
+      }
+      if (stored === "light" || stored === "dark") return;
+      document.documentElement.classList.toggle("dark", e.matches);
+      setTheme(e.matches ? "dark" : "light");
+    };
+    media.addEventListener("change", followSystem);
+    return () => media.removeEventListener("change", followSystem);
   }, []);
 
   const toggleTheme = () => {

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import GithubMark from "@/components/icons/GithubMark";
 import projects from "@/data/projects.json";
 
 const FILTERS = [
@@ -24,10 +26,11 @@ export default function ProjectsGrid() {
             role="tab"
             aria-selected={filter === f.id}
             onClick={() => setFilter(f.id)}
-            className={`rounded-md border px-3 py-1.5 font-mono text-xs transition-colors duration-150 ${
+            className={`min-h-11 rounded-pill border px-3.5 py-1.5 text-label md:min-h-0 transition-colors duration-150 ${
               filter === f.id
-                ? "border-foreground bg-foreground text-background"
-                : "border-border text-text-muted hover:border-foreground/40 hover:text-foreground"
+                ? // White-on-orange needs 16px semibold (3.5:1); a 14px chip uses brand-ink on the ground instead.
+                  "border-brand text-brand-ink"
+                : "border-border text-ink-muted hover:border-border-strong hover:text-ink"
             }`}
           >
             {f.label}
@@ -45,44 +48,39 @@ export default function ProjectsGrid() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.2 }}
-              className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-6 transition-colors duration-150 hover:border-zinc-300 dark:hover:border-zinc-700"
+              className="card flex flex-col gap-4 p-6"
             >
-              <h2 className="text-lg font-semibold leading-snug tracking-tight">{project.title}</h2>
-              <p className="line-clamp-2 text-sm leading-relaxed text-text-muted">
+              <h2 className="text-card-title text-ink">{project.title}</h2>
+              <p className="line-clamp-2 text-label font-normal text-ink-muted">
                 {project.summary}
               </p>
               <ul className="flex flex-wrap gap-1.5">
                 {project.tags.map((tag) => (
-                  <li
-                    key={tag}
-                    className="rounded-md border border-border bg-surface-muted px-2 py-0.5 font-mono text-xs text-zinc-500 dark:text-zinc-400"
-                  >
+                  <li key={tag} className="tag">
                     {tag}
                   </li>
                 ))}
               </ul>
-              <div className="mt-auto flex items-center gap-5 border-t border-border pt-4 text-sm font-medium">
-                {project.live ? (
+              <div className="mt-auto flex items-center gap-5 border-t border-border pt-4 text-label">
+                {project.live && (
                   <a
                     href={project.live}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="transition-colors duration-150 hover:text-text-muted"
+                    className="link"
                   >
-                    Live Demo ↗
+                    Live demo
+                    <ArrowUpRight size={16} aria-hidden="true" />
                   </a>
-                ) : (
-                  <span className="cursor-not-allowed text-text-muted/60" title="Not deployed yet">
-                    Live Demo ↗
-                  </span>
                 )}
                 <a
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="transition-colors duration-150 hover:text-text-muted"
+                  className="link"
                 >
-                  Source Code ↗
+                  <GithubMark size={16} />
+                  Source code
                 </a>
               </div>
             </motion.article>

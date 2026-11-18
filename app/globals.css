@@ -1,75 +1,22 @@
 @import "tailwindcss";
+/* Shared Ember layer (tokens, type, components). Keep identical across sites. */
+@import "./ember.css";
 
-/* Class-based dark mode: toggled via a `dark` class on <html> instead of prefers-color-scheme */
-@custom-variant dark (&:where(.dark, .dark *));
+/* Site-specific styles below this line. */
 
-:root {
-  --background: #fafafa; /* zinc-50 */
-  --foreground: #18181b; /* zinc-900 */
-
-  --surface: #ffffff;
-  --surface-border: #e4e4e7; /* zinc-200 */
-  --surface-muted: #f4f4f5; /* zinc-100 */
-
-  /* Single neutral accent — used for hovers/labels instead of a brand colour */
-  --accent-cyan: #18181b;
-  --accent-emerald: #15803d; /* green-700, only for positive metrics */
-
-  --text-muted: #52525b; /* zinc-600 */
+/* Hero name always fits on one line. "Manish Kandel" in Inter 600 at -0.03em is
+   ~6.3em wide, so the size is derived from the column width with a little slack. */
+.hero-name {
+  white-space: nowrap;
+  /* single column below lg: column = viewport − 2 × 24px gutter. 100vw includes a
+     classic (Windows) scrollbar, so the divisor leaves ~17px of slack for it. */
+  font-size: clamp(36px, calc((100vw - 48px) / 6.9), 80px);
 }
-
-.dark {
-  --background: #09090b; /* zinc-950 */
-  --foreground: #fafafa; /* zinc-50 */
-
-  --surface: #18181b; /* zinc-900 */
-  --surface-border: #27272a; /* zinc-800 */
-  --surface-muted: #27272a; /* zinc-800 */
-
-  --accent-cyan: #f4f4f5; /* zinc-100 */
-  --accent-emerald: #4ade80; /* green-400 */
-
-  --text-muted: #a1a1aa; /* zinc-400 */
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-surface: var(--surface);
-  --color-surface-border: var(--surface-border);
-  --color-border: var(--surface-border);
-  --color-surface-muted: var(--surface-muted);
-  --color-accent-cyan: var(--accent-cyan);
-  --color-accent-emerald: var(--accent-emerald);
-  --color-text-muted: var(--text-muted);
-
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
-}
-
-* {
-  border-color: var(--surface-border);
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-::selection {
-  background: #d4d4d8; /* zinc-300 */
-  color: #18181b;
-}
-
-.dark ::selection {
-  background: #3f3f46; /* zinc-700 */
-  color: #fafafa;
+@media (min-width: 64rem) {
+  .hero-name {
+    /* two columns: (viewport − gutters − 48px gap) / 2, capped at 72px */
+    font-size: clamp(56px, calc((100vw - 96px) / 13.2), 72px);
+  }
 }
 
 /* Slim, theme-aware scrollbar */
@@ -77,24 +24,14 @@ body {
   width: 10px;
   height: 10px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background-color: var(--surface-border);
+  background-color: var(--border);
   border-radius: 999px;
-  border: 2px solid var(--background);
+  border: 2px solid var(--surface-0);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--text-muted);
-}
-
-@layer utilities {
-  .card-surface {
-    background: var(--surface);
-    border: 1px solid var(--surface-border);
-  }
+  background-color: var(--ink-muted);
 }

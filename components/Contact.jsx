@@ -5,22 +5,23 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Mail, Copy, Check, FileText, Loader2, Send, X, Phone } from "lucide-react";
 import GithubMark from "@/components/icons/GithubMark";
 import LinkedinMark from "@/components/icons/LinkedinMark";
-import { profile, gmailComposeUrl } from "@/data/profile";
+import { profile, gmailComposeUrl, BRAND } from "@/data/profile";
 
-const inputClass =
-  "w-full rounded-lg border border-zinc-300 bg-white p-3 text-sm text-foreground placeholder:text-zinc-400 focus:border-zinc-500 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900/50 dark:placeholder:text-zinc-500";
+const inputClass = "field";
 
-const actionClass =
-  "inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium transition-colors duration-150 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-transparent dark:hover:bg-zinc-800/60";
+const actionClass = "btn-secondary";
 
+// Clickable wells: Ember cards swap to the `border` colour on hover.
 const cardClass =
-  "flex items-center gap-3 rounded-lg border border-zinc-200 px-3.5 py-3 text-sm transition-colors duration-150 dark:border-zinc-800";
+  "card card-link flex min-w-0 items-center gap-2 rounded-sm px-3 py-3 text-label text-ink sm:gap-3 sm:px-4";
 
 const WEB3FORMS_URL = "https://api.web3forms.com/submit";
 
 export default function Contact() {
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
   const [toast, setToast] = useState(null);
+  // Decoded only on request so the number is absent from the served HTML.
+  const [phone, setPhone] = useState(null);
 
   const notify = (ok, text) => setToast({ ok, text, id: Date.now() });
 
@@ -49,7 +50,7 @@ export default function Contact() {
       process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "2dae1177-e10a-45dc-a97d-b6f701d49b36"
     );
     formData.append("replyto", String(formData.get("email") ?? ""));
-    formData.append("subject", "New Contact Message from manish.dev");
+    formData.append("subject", `New Contact Message from ${BRAND}`);
 
     setStatus("sending");
     try {
@@ -68,77 +69,99 @@ export default function Contact() {
   };
 
   return (
-    <section className="mx-auto w-full max-w-5xl px-6 py-12 md:py-16">
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/60 md:p-12"
-      >
+    <section className="mx-auto w-full max-w-5xl px-6 py-16 md:py-24">
+      <div className="card p-6 sm:p-8 md:p-12">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
           <div className="flex flex-col gap-8">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight text-zinc-900 md:text-4xl dark:text-zinc-100 leading-tight">
+              <h1 className="text-display-lg text-ink">
                 Let&apos;s build something together
               </h1>
-              <p className="mt-4 leading-relaxed text-text-muted">
+              <p className="mt-4 text-body text-ink-muted">
                 Open to freelance work and full-time engineering roles. Send a message or reach
                 out directly.
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              <a href={gmailComposeUrl} target="_blank" rel="noopener noreferrer" className={actionClass}>
-                <Mail size={16} />
-                Open in Gmail
+            {/* Side by side on every width; shorter labels on phones so both fit. */}
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
+              <a
+                href={gmailComposeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${actionClass} whitespace-nowrap max-sm:px-3`}
+              >
+                <Mail size={16} aria-hidden="true" />
+                <span className="sm:hidden">Gmail</span>
+                <span className="hidden sm:inline">Open in Gmail</span>
               </a>
-              <button type="button" onClick={copyEmail} className={actionClass}>
-                <Copy size={16} />
-                Copy Email
+              <button
+                type="button"
+                onClick={copyEmail}
+                className={`${actionClass} whitespace-nowrap max-sm:px-3`}
+              >
+                <Copy size={16} aria-hidden="true" />
+                Copy email
               </button>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {/* Two per row on every width so all four options fit on one phone screen. */}
+            <div className="grid grid-cols-2 gap-3">
               <a
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${cardClass} hover:bg-zinc-50 dark:hover:bg-zinc-800/60`}
+                className={`${cardClass}`}
               >
                 <GithubMark size={16} className="shrink-0" />
-                <span className="truncate">{profile.githubUsername}</span>
+                <span className="truncate sm:hidden">GitHub</span>
+                <span className="hidden truncate sm:inline">{profile.githubUsername}</span>
               </a>
               <a
                 href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${cardClass} hover:bg-zinc-50 dark:hover:bg-zinc-800/60`}
+                className={`${cardClass}`}
               >
                 <LinkedinMark size={16} className="shrink-0" />
-                LinkedIn
+                <span className="truncate">LinkedIn</span>
               </a>
               <a
                 href={profile.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${cardClass} hover:bg-zinc-50 dark:hover:bg-zinc-800/60`}
+                // Once the number is shown it needs a full row on phones; Resume takes one too
+                // so neither sits alone in half a row.
+                className={`${cardClass} ${phone ? "max-sm:col-span-2" : ""}`}
               >
                 <FileText size={16} className="shrink-0" />
                 Resume
               </a>
-              <a
-                href={`tel:${profile.phone.replace(/\s+/g, "")}`}
-                className={`${cardClass} hover:bg-zinc-50 dark:hover:bg-zinc-800/60`}
-              >
-                <Phone size={16} className="shrink-0" />
-                <span className="truncate font-mono text-xs">{profile.phone}</span>
-              </a>
+              {phone ? (
+                <a
+                  href={`tel:${phone.replace(/\s+/g, "")}`}
+                  className={`${cardClass} max-sm:col-span-2`}
+                >
+                  <Phone size={16} className="shrink-0" />
+                  <span className="truncate tabular-nums">{phone}</span>
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setPhone(atob(profile.phoneEncoded))}
+                  className={`${cardClass} text-left`}
+                >
+                  <Phone size={16} className="shrink-0" />
+                  <span className="sm:hidden">Phone</span>
+                  <span className="hidden sm:inline">Show phone number</span>
+                </button>
+              )}
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="name" className="text-sm font-medium">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="name" className="text-label text-ink">
                 Your Name
               </label>
               <input
@@ -151,8 +174,8 @@ export default function Contact() {
               />
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="email" className="text-sm font-medium">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className="text-label text-ink">
                 Your Email
               </label>
               <input
@@ -166,8 +189,8 @@ export default function Contact() {
               />
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="message" className="text-sm font-medium">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="message" className="text-label text-ink">
                 Message
               </label>
               <textarea
@@ -186,7 +209,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition-colors duration-150 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+              className="btn-primary"
             >
               {status === "sending" ? (
                 <>
@@ -203,12 +226,13 @@ export default function Contact() {
 
             <div aria-live="polite">
               {status === "success" && (
-                <p className="text-sm font-medium text-green-600 dark:text-green-400">
-                  ✓ Message sent! I&apos;ll get back to you shortly.
+                <p className="inline-flex items-center gap-2 text-label text-ink">
+                  <Check size={16} aria-hidden="true" />
+                  Message sent! I&apos;ll get back to you shortly.
                 </p>
               )}
               {status === "error" && (
-                <p className="text-sm text-text-muted">
+                <p className="text-label font-normal text-ink-muted">
                   Could not connect. Please click &lsquo;Open in Gmail&rsquo; or email{" "}
                   {profile.email} directly.
                 </p>
@@ -216,7 +240,7 @@ export default function Contact() {
             </div>
           </form>
         </div>
-      </motion.div>
+      </div>
 
       <AnimatePresence>
         {toast && (
@@ -227,12 +251,12 @@ export default function Contact() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
-            className="fixed bottom-6 right-6 z-[90] flex max-w-sm items-start gap-3 rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-zinc-100 shadow-lg"
+            className="fixed bottom-6 right-6 z-[90] flex max-w-sm items-start gap-3 rounded-sm bg-ink px-4 py-3 text-label font-normal text-surface-0"
           >
             {toast.ok ? (
-              <Check size={16} className="mt-0.5 shrink-0 text-emerald-400" />
+              <Check size={16} className="mt-0.5 shrink-0 text-brand" />
             ) : (
-              <X size={16} className="mt-0.5 shrink-0 text-red-400" />
+              <X size={16} className="mt-0.5 shrink-0" />
             )}
             <span>{toast.text}</span>
           </motion.div>

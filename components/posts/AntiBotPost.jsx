@@ -108,17 +108,17 @@ with sync_playwright() as p:
         Machine-regular timing is one of the oldest signals, and hammering a small shop is also
         just rude. Three habits fixed most of my blocks:
       </P>
-      <ul className="mb-6 list-disc space-y-2 pl-5 leading-7 text-text-muted marker:text-border">
+      <ul className="mb-6 list-disc space-y-2 pl-5 text-body text-ink-muted marker:text-border-strong">
         <li>
-          <strong className="text-foreground">Randomise delays</strong> instead of sleeping a fixed
+          <strong className="text-ink">Randomise delays</strong> instead of sleeping a fixed
           interval.
         </li>
         <li>
-          <strong className="text-foreground">Back off exponentially</strong> on 429 and 5xx
+          <strong className="text-ink">Back off exponentially</strong> on 429 and 5xx
           responses, and honour <Code>Retry-After</Code> when it is sent.
         </li>
         <li>
-          <strong className="text-foreground">Limit per domain</strong>, not globally, so one slow
+          <strong className="text-ink">Limit per domain</strong>, not globally, so one slow
           target doesn&apos;t starve the rest and no single host sees a burst.
         </li>
       </ul>

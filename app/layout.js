@@ -1,33 +1,28 @@
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, themeInitScript } from "@/lib/theme-provider";
+import { MotionProvider } from "@/lib/motion-provider";
 import { CommandPaletteProvider } from "@/lib/command-palette-context";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import ScrollProgress from "@/components/ScrollProgress";
-import ScrollRestoration from "@/components/ScrollRestoration";
+import { profile, SITE_URL } from "@/data/profile";
+import { SITE_TITLE, SITE_NAME, rootAlternates } from "@/lib/seo";
 
+// Variable Inter with the optical-size axis: large text gets the tighter display cuts.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  axes: ["opsz"],
   display: "swap",
 });
-
-const mono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const SITE_URL = "https://kandelmanish.com.np";
-const SITE_TITLE = "Manish Kandel — Full-Stack Developer & Python Automation Specialist";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: "%s | Manish Kandel",
+    template: `%s | ${profile.name}`,
   },
   description:
     "Full-stack developer building React web applications, Node.js REST APIs, and automated Python data pipelines in Kathmandu, Nepal.",
@@ -40,16 +35,18 @@ export const metadata = {
     "Web Scraping",
     "Kathmandu Developer",
   ],
-  authors: [{ name: "Manish Kandel", url: SITE_URL }],
-  creator: "Manish Kandel",
+  authors: [{ name: profile.name, url: SITE_URL }],
+  creator: profile.name,
+  // Canonicals are set per page; this keeps the RSS link on any page without its own.
+  alternates: rootAlternates,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: SITE_URL,
+    url: "/",
     title: SITE_TITLE,
     description:
       "Full-stack developer building React web applications, Node.js REST APIs, and automated Python data pipelines.",
-    siteName: "Manish Kandel Portfolio",
+    siteName: SITE_NAME,
   },
   twitter: {
     card: "summary_large_image",
@@ -67,23 +64,24 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${mono.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
         {/* Runs before hydration to prevent a light/dark flash on load */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-surface-0 text-ink font-sans" suppressHydrationWarning>
         <ThemeProvider>
+          <MotionProvider>
             <CommandPaletteProvider>
-              <ScrollRestoration />
               <ScrollProgress />
               <Navbar />
               <main className="flex-1">{children}</main>
               <Footer />
               <CommandPalette />
             </CommandPaletteProvider>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

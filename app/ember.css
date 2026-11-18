@@ -1,0 +1,321 @@
+/*
+ * Ember design system (https://claude.ai/artifact/XvZCZsP6syXamrxwgx95Dv).
+ * Token names match tokens.json; values are copied exactly.
+ *
+ * Shared layer: copy this file unchanged into every site so they look and behave
+ * the same. Import it right after Tailwind:
+ *   @import "tailwindcss";
+ *   @import "./ember.css";
+ * Fonts: load Inter only (variable, with the opsz axis), exposed as --font-inter
+ * (next/font) or by family name (plain CSS).
+ * One typeface everywhere, as in the Whop app: the display styles (text-display-*,
+ * title, figure) keep Ember's sizes and tracking but are set in Inter. Ember's
+ * Space Grotesk stand-in is not used, for consistency across pages and sites.
+ * Both themes are the "app" mood. Dark: one flat #111 ground, cards split by
+ * border hairlines at radius-xl. Light: surface-100 wells at radius-lg.
+ */
+
+/* Class-based dark mode: toggled via a `dark` class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --brand: #fa4616;
+  --brand-ink: #c2310a;
+  --on-brand: #ffffff;
+  --surface-0: #ffffff;
+  --surface-50: #fafaf8;
+  --surface-100: #f4f3ef;
+  --surface-200: #edebe5;
+  --ink: #202020;
+  --ink-muted: #646464;
+  --ink-subtle: #767676;
+  --border: #e6e4de;
+  --border-strong: #8a8883;
+  --focus: #fa4616;
+  --success: #23863a;
+  --live: #2e9e3e;
+  --info-bg: #e6edfe;
+  --info: #2f55c9;
+  --chart-line: #c9c7c1;
+
+  /* Card treatment per theme (Card spec in light, AppPanel card in dark). */
+  --card-bg: var(--surface-100);
+  --card-border: transparent;
+  --card-radius: 16px; /* radius-lg */
+  --card-hover: var(--border);
+}
+
+.dark {
+  --brand: #fa4616;
+  --brand-ink: #ff9275;
+  --on-brand: #ffffff;
+  --surface-0: #111111;
+  --surface-50: #191919;
+  --surface-100: #222222;
+  --surface-200: #2a2a2a;
+  --ink: #eeeeee;
+  /* Secondary text and hairlines are translucent white so they tint with their surface. */
+  --ink-muted: rgba(255, 255, 255, 0.686);
+  --ink-subtle: rgba(255, 255, 255, 0.447);
+  --border: rgba(255, 255, 255, 0.106);
+  --border-strong: #6e6e6e;
+  --focus: #fa4616;
+  --success: #49d93d;
+  --live: #17be00;
+  --info-bg: rgba(14, 90, 253, 0.26);
+  --info: #699bff;
+  --chart-line: #484848;
+
+  --card-bg: var(--surface-0);
+  --card-border: var(--border);
+  --card-radius: 20px; /* radius-xl */
+  --card-hover: var(--surface-100);
+}
+
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-on-brand: var(--on-brand);
+  --color-surface-0: var(--surface-0);
+  --color-surface-50: var(--surface-50);
+  --color-surface-100: var(--surface-100);
+  --color-surface-200: var(--surface-200);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-success: var(--success);
+  --color-live: var(--live);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-chart-line: var(--chart-line);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-focus: var(--focus);
+
+  --font-sans: var(--font-inter, Inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", system-ui, sans-serif;
+  /* Display = Inter: one typeface across every page (site decision, 2026-11-18). */
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-item: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+}
+
+/* Type styles from tokens.json (display-* use the display family, which is Inter). */
+@utility text-display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 11vw, 96px);
+  line-height: 0.95;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+@utility text-display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 6vw, 48px);
+  line-height: 1.05;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+@utility text-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+/* Section headings: Ember's `title` metrics in Inter, matching the Whop app's
+   Inter-only headings. Extension used by every site; not yet in tokens.json. */
+@utility text-section {
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+@utility text-figure {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 48px;
+  font-weight: 500;
+}
+@utility text-card-title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.004em;
+}
+@utility text-nav {
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 500;
+  letter-spacing: -0.006em;
+}
+@utility text-lead {
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.3;
+  font-weight: 400;
+}
+@utility text-body {
+  font-size: 16px;
+  line-height: 24px;
+}
+@utility text-label {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+@utility text-caption {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  /* Smooth in-page jumps, except for visitors who asked their OS for less motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: var(--surface-0);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Iconography: outline icons at one stroke weight (Lucide adds the class). */
+  svg.lucide {
+    stroke-width: 1.75;
+  }
+
+  ::selection {
+    background: var(--brand);
+    color: var(--on-brand);
+  }
+}
+
+/* Components from the Ember Button, Card and Input specs. */
+@layer components {
+  /* Primary: one per view. 16px semibold minimum keeps white-on-orange legible (3.5:1). */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: var(--radius-lg);
+    background: var(--brand);
+    color: var(--on-brand);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    transition: filter 0.15s ease;
+  }
+  .btn-primary:hover {
+    filter: brightness(0.92);
+  }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface-0);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+  }
+  .btn-secondary:hover {
+    background: var(--surface-100);
+  }
+
+  /* Card: no shadow. Light: surface-100 well. Dark: flat ground + border hairline, radius-xl. */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--card-radius);
+  }
+  .card-link {
+    transition: background-color 0.15s ease;
+  }
+  .card-link:hover {
+    background: var(--card-hover);
+  }
+
+  /* Tag chip: pill, hairline border, quiet text. Orange is for actions, not labels. */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    color: var(--ink-muted);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+  }
+
+  .field {
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .field::placeholder {
+    color: var(--ink-muted);
+  }
+  .field:focus {
+    border-color: var(--brand);
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Text link; add an icon inside and it lines up (16px inline, space-1 gap). */
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--brand-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+}
